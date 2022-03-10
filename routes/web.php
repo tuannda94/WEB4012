@@ -60,5 +60,5 @@ Route::get('/users/{userId}/{username?}', function (
     $userId,
     $userName = 'profile'
 ) {
-    dd($userId, $userName, $request->all());
+    // dd($userId, $userName, $request->all());
 });
