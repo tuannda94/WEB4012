@@ -53,6 +53,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/product', function () {
+    return view('product');
+});
+
 // Route kem query string va params
 // Voi tham so truyen vao url thi function se nhan 1 tham so tuong ung
 Route::get('/users/{userId}/{username?}', function (
