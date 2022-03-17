@@ -50,7 +50,24 @@ Route::get('/login', function () {
 });
 
 Route::get('/home', function () {
-    return view('home');
+    $students = [
+        [
+            'name' => 'Tuannda3',
+            'age' => 20,
+            'class' => 'WE16201',
+            'id' => '1',
+            'avatar' => "https://iap.poly.edu.vn/user/ph/PH13025.jpg"
+        ],
+        [
+            'name' => 'Tuannda3',
+            'age' => 20,
+            'class' => 'WE16201',
+            'id' => '2',
+            'avatar' => "https://iap.poly.edu.vn/user/ph/PH13025.jpg"
+        ],
+    ];
+    // dd($students);
+    return view('home', ['students' => $students]);
 });
 
 Route::get('/product', function () {
