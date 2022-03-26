@@ -6,6 +6,8 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+use App\Http\Requests\CategoryRequest;
+
 class CategoryController extends Controller
 {
     public function index()
@@ -28,14 +30,24 @@ class CategoryController extends Controller
         return view('category.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
+        // Validate
+        // $request->validate([
+        //     // name nào sẽ validate điều kiện gì
+        //     'name' => 'required|min:6|max:32',
+        //     'description' => 'min:6',
+        //     'status' => 'required'
+        // ]);
+        // Nếu có lỗi trong điều kiện truyền vào thì tự động kết thúc
+        // hàm và quay trở lại form kèm biến $errors
+
         $categoryRequest = $request->all();
         $category = new Category();
         $category->name = $categoryRequest['name'];
         $category->description = $categoryRequest['description'];
         $category->status = $categoryRequest['status'];
-        $category->slug = Str::slug($categoryRequest['name']);
+        $category->slug = Str::slug($categoryRequest['name']) . '-' . uniqid();
         // use Illuminate\Support\Str;
 
         $category->save();
@@ -49,6 +61,28 @@ class CategoryController extends Controller
         // $cate = Category::find($id);
         // $id bây giờ không phải 1 số mà là đối tương Category có id = id trên param
         return view('category.create', ['category' => $id]);
+    }
+
+    public function update(CategoryRequest $request, Category $id)
+    {
+        // $request->validate([
+        //     // name nào sẽ validate điều kiện gì
+        //     'name' => 'required|min:6|max:32',
+        //     'description' => 'min:6',
+        //     'status' => 'required'
+        // ]);
+
+        // $cateUpdate chinh la doi tuong Category co id = $id
+        $cateUpdate = $id;
+        // Gan gia tri moi cho doi tuong $cateUpdate
+        $cateUpdate->name = $request->name;
+        $cateUpdate->description = $request->description;
+        $cateUpdate->slug = Str::slug($request->name) . '-' . uniqid();
+        $cateUpdate->status = $request->status;
+        // Thuc thi viec luu du lieu moi vao DB
+        $cateUpdate->update();
+        // Quay ve danh sach
+        return redirect()->route('categories.index');
     }
 
     public function delete(Category $cate) {
