@@ -36,6 +36,10 @@
                     <td>{{ $category->created_at ?: 'N/A' }}</td>
                     <td>{{ $category->updated_at ?: 'N/A' }}</td>
                     <td>
+                        <a
+                            href="{{route('categories.edit', $category->id)}}"
+                            class="btn btn-warning"
+                        >Edit</a>
                         <form
                             action="{{route('categories.delete', $category->id)}}"
                             method="POST"

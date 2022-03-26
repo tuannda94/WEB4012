@@ -15,9 +15,8 @@ class CategoryController extends Controller
         $categories = Category::all();
         // get: lay ra toan bo cac ban ghi, ket hop dc cac dieu kien #
         // get se nam cuoi cung cua doan truy van
-        $categoriesGet = Category::select('id', 'name', 'description')
-            // ->where('id', '>', 3)
-            // ->get();
+        $categoriesGet = Category::select('*')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return view('category.index', ['categories' => $categoriesGet]);
@@ -42,6 +41,14 @@ class CategoryController extends Controller
         $category->save();
 
         return redirect()->route('categories.index');
+    }
+
+    public function edit(Category $id)
+    {
+        // Neu khong sd model binding
+        // $cate = Category::find($id);
+        // $id bây giờ không phải 1 số mà là đối tương Category có id = id trên param
+        return view('category.create', ['category' => $id]);
     }
 
     public function delete(Category $cate) {

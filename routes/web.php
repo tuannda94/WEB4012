@@ -91,8 +91,14 @@ Route::get('/users/{userId}/{username?}', function (
 // prefix: duong dan chung cua group, noi -> /categories/create
 // name: name chung cua group, noi cac name con: categories.index
 Route::prefix('/categories')->name('categories.')->group(function () {
+    // Danh sach
     Route::get('/', [CategoryController::class, 'index'])->name('index');
+    // Tao moi
     Route::get('/create', [CategoryController::class, 'create'])->name('create');
     Route::post('/store', [CategoryController::class, 'store'])->name('store');
+    // Chinh sua
+    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [CategoryController::class, 'update'])->name('update');
+    // Xoa
     Route::delete('/{cate}', [CategoryController::class, 'delete'])->name('delete');
 });
