@@ -51,6 +51,11 @@
                         <p>Category</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('products.index')}}" class="nav-link {{Route::is('products.index') ? 'active' : ''}}">
+                        <p>Product</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

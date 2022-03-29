@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -14,7 +15,9 @@ class ProductController extends Controller
     // Tra ve danh sach cac ban ghi product
     public function index()
     {
-        //
+        $products = Product::select('id', 'name', 'price')->orderBy('id', 'desc')->paginate(10);
+
+        return view('product.index', compact('products'));
     }
 
     /**
@@ -61,8 +64,10 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     // Xoa 1 ban ghi product
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        if ($product->delete()) {
+            return redirect()->route('products.index');
+        }
     }
 }
