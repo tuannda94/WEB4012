@@ -18,6 +18,7 @@
         <thead>
             <th>ID</th>
             <th>Name</th>
+            <th>Category</th>
             <th>Price</th>
             <th>Actions</th>
         </thead>
@@ -26,6 +27,11 @@
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
+                    <td><ul>
+                        @foreach($product->categories as $category)
+                            <li>{{$category->name}}</li>
+                        @endforeach
+                    </ul></td>
                     <td>{{ $product->price }}</td>
                     <td>
                         <a

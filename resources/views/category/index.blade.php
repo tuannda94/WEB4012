@@ -23,6 +23,7 @@
             <th>Status</th>
             <th>Created at</th>
             <th>Updated at</th>
+            <th>Products</th>
             <th>Actions</th>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@
                     <td>{{ $category->status == 1 ? 'Active' : 'Deactive' }}</td>
                     <td>{{ $category->created_at ?: 'N/A' }}</td>
                     <td>{{ $category->updated_at ?: 'N/A' }}</td>
+                    <td>{{ $category->products_count }}</td>
                     <td>
                         <a
                             href="{{route('categories.edit', $category->id)}}"

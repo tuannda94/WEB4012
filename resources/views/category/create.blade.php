@@ -83,4 +83,18 @@
         </div>
     </form>
 
+    <div>
+        <table>
+            <thead>
+                <tr><th>Product Name</th></tr>
+            </thead>
+            <tbody>
+                @foreach($products as $product)
+                    <tr><td>{{$product->name}}</td></tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{$products->links()}}
+    </div>
+
 @endsection

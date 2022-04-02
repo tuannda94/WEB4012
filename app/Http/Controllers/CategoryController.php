@@ -18,6 +18,7 @@ class CategoryController extends Controller
         // get: lay ra toan bo cac ban ghi, ket hop dc cac dieu kien #
         // get se nam cuoi cung cua doan truy van
         $categoriesGet = Category::select('*')
+            ->withCount('products')
             ->orderBy('id', 'desc')
             ->paginate(10);
 
@@ -60,7 +61,20 @@ class CategoryController extends Controller
         // Neu khong sd model binding
         // $cate = Category::find($id);
         // $id bây giờ không phải 1 số mà là đối tương Category có id = id trên param
-        return view('category.create', ['category' => $id]);
+
+        // 1. Nếu việc gọi đến phương thức mà không có cú pháp gọi hàm
+        // -> trả về 1 collection (array object), giống all()
+        $products = $id->products; // $id là 1 thể hiện của model Category
+        // dd($id, $id
+        // ->products()->select('name')->paginate(10));
+        // 2. Nếu việc gọi đến phương thức có cú pháp gọi hàm
+            // -> tiến hành query tiếp được và get() hoặc paginate()
+        $productsWithPaginate = $id
+            ->products()->select('name')->paginate(10);
+        return view('category.create', [
+            'category' => $id,
+            'products' => $productsWithPaginate
+        ]);
     }
 
     public function update(CategoryRequest $request, Category $id)

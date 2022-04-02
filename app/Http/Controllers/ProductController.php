@@ -15,7 +15,24 @@ class ProductController extends Controller
     // Tra ve danh sach cac ban ghi product
     public function index()
     {
-        $products = Product::select('id', 'name', 'price')->orderBy('id', 'desc')->paginate(10);
+        // Lấy danh sách kèm bản ghi quan hệ
+        // 1. with() ngay trong câu truy vấn
+        $products = Product::
+        select('id', 'name', 'price', 'category_id')
+            // Sử dụng 1 trong 3 cách bên dưới để select cho quan hệ
+            // ->with('category', function ($query) {
+            //     $query->select('id', 'name');
+            // })
+            // ->with('category:categories.id,categories.name')
+            // ->with('category:id,name')
+            ->with('categories:id,name')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+
+            // dd($products);
+
+        // 2. load() sau khi đã lấy danh sách
+        // $products->load('category');
 
         return view('product.index', compact('products'));
     }
