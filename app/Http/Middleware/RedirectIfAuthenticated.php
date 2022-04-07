@@ -23,7 +23,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
+                // Di chuyển về đường dẫn này nếu đã đăng nhập rồi
+                // mà vẫn cố tình vào các route có middleware guest
+                return redirect()->route('products.index');
             }
         }
 

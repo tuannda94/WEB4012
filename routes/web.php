@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LoginController;
 // Su dung Request $request trong callback cua route
 
 /*
@@ -104,7 +105,7 @@ Route::prefix('/categories')->name('categories.')->group(function () {
     Route::delete('/{cate}', [CategoryController::class, 'delete'])->name('delete');
 });
 
-Route::prefix('/products')->name('products.')->group(function () {
+Route::middleware('auth')->prefix('/products')->name('products.')->group(function () {
     // Danh sach
     Route::get('/', [ProductController::class, 'index'])->name('index');
     // Tao moi
@@ -115,4 +116,13 @@ Route::prefix('/products')->name('products.')->group(function () {
     Route::put('/update/{product}', [ProductController::class, 'update'])->name('update');
     // Xoa
     Route::delete('/{product}', [ProductController::class, 'destroy'])->name('delete');
+});
+
+// Logout phải được tiến hành khi người dùng đã đăng nhập, nên middleware là auth
+Route::get('/auth/logout', [LoginController::class, 'logout'])
+    ->middleware('auth')->name('auth.logout');
+
+Route::middleware('guest')->prefix('/auth')->name('auth.')->group(function () {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('post-login');
 });
