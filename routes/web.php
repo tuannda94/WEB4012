@@ -92,7 +92,7 @@ Route::get('/users/{userId}/{username?}', function (
 
 // prefix: duong dan chung cua group, noi -> /categories/create
 // name: name chung cua group, noi cac name con: categories.index
-Route::prefix('/categories')->name('categories.')->group(function () {
+Route::middleware(['auth', 'authActive'])->prefix('/categories')->name('categories.')->group(function () {
     // Danh sach
     Route::get('/', [CategoryController::class, 'index'])->name('index');
     // Tao moi

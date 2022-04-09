@@ -21,7 +21,11 @@ class LoginController extends Controller
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $request->session()->regenerate();
-
+            // Lay ra thong tin user dang dang nhap
+            // $user = Auth::user();
+            // if ($user->status === 0) {
+            //     return Auth::logout();
+            // }
             return redirect()->route('products.index');
         }
 
