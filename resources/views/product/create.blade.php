@@ -11,10 +11,12 @@
 @section('content')
     <form
         action="{{isset($product)
-            ? route('categories.update', $product->id)
-            : route('categories.store')}}"
+            ? route('products.update', $product->id)
+            : route('products.store')}}"
         class="form"
         method="POST"
+        {{-- Nếu trong form có file --}}
+        enctype="multipart/form-data"
     >
         {{-- Neu co du lieu $product thi se là update, ép kiểu method
             về PUT --}}
@@ -35,7 +37,6 @@
                 @endforeach
             </ul>
         @endif
-
         <div class="form-group">
             <label for="name">Name</label>
             <input
@@ -46,12 +47,58 @@
             />
         </div>
         <div class="form-group">
+            <label for="description">Short Description</label>
+            <input
+                name="short_description"
+                class="form-control"
+                id="short_description"
+                value="{{isset($product) ? $product->short_description : ''}}"
+            />
+        </div>
+        <div class="form-group">
             <label for="description">Description</label>
             <input
                 name="description"
                 class="form-control"
                 id="description"
                 value="{{isset($product) ? $product->description : ''}}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="description">Price</label>
+            <input
+                name="price"
+                class="form-control"
+                id="price"
+                value="{{isset($product) ? $product->price : ''}}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="description">Quantity</label>
+            <input
+                name="quantity"
+                class="form-control"
+                id="quantity"
+                value="{{isset($product) ? $product->quantity : ''}}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="description">Thumbnail</label>
+            <input
+                type="file"
+                name="thumbnail_url"
+                class="form-control"
+                id="thumbnail_url"
+                value="{{isset($product) ? $product->thumbnail_url : ''}}"
+            />
+        </div>
+        <div class="form-group">
+            <label for="description">Category</label>
+            <input
+                name="category_id"
+                class="form-control"
+                id="category_id"
+                value="{{isset($product) ? $product->category_id : ''}}"
             />
         </div>
         <div class="form-group">

@@ -20,10 +20,12 @@
             <th>Name</th>
             <th>Category</th>
             <th>Price</th>
+            <th>Image</th>
             <th>Actions</th>
         </thead>
         <tbody>
             @foreach ($products as $product)
+                {{-- {{dd($product)}} --}}
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->name }}</td>
@@ -33,6 +35,7 @@
                         @endforeach
                     </ul></td>
                     <td>{{ $product->price }}</td>
+                    <td><img width="100" src="{{asset($product->thumbnail_url)}}" alt=""></td>
                     <td>
                         <a
                             href="{{route('products.edit', $product->id)}}"

@@ -18,14 +18,14 @@ class ProductController extends Controller
         // Lấy danh sách kèm bản ghi quan hệ
         // 1. with() ngay trong câu truy vấn
         $products = Product::
-        select('id', 'name', 'price', 'category_id')
+        // select('id', 'name', 'price', 'category_id')
             // Sử dụng 1 trong 3 cách bên dưới để select cho quan hệ
             // ->with('category', function ($query) {
             //     $query->select('id', 'name');
             // })
             // ->with('category:categories.id,categories.name')
             // ->with('category:id,name')
-            ->with('categories:id,name')
+            with('categories:id,name')
             ->orderBy('id', 'desc')
             ->paginate(10);
 
@@ -37,6 +37,11 @@ class ProductController extends Controller
         return view('product.index', compact('products'));
     }
 
+    public function create()
+    {
+        return view('product.create');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -46,7 +51,31 @@ class ProductController extends Controller
     // Tao ban ghi product moi
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+        $product->fill($request->all());
+        // Nếu có file ở name là thumbnail_url
+        if ($request->hasFile('thumbnail_url')) {
+            // Tạo tên cho file để khi lưu tránh việc trùng lặp
+            $file = $request->thumbnail_url;
+            // $originalFileName = $file->getClientOriginalName();
+            $fileHashName = $file->hashName();
+            $fileName = $request->name . '-' . $fileHashName;
+            // Lưu file (storage/app/images/products)
+            $product->thumbnail_url = $file->storeAs('images/products', $fileName);
+            // đường dẫn file: images/products/tên file
+
+            // Trong config/filesystem.php -> thêm cấu hình links
+            // public/images ~ storage/app/images/products
+            // Chạy php artisan storage:link
+        } else {
+            // Nếu không có file ở name thumbnail_url thì sẽ
+            // gán đường dẫn mặc định
+            $product->thumbnail_url = '';
+        }
+
+        $product->save();
+
+        return redirect()->route('products.index');
     }
 
     /**
