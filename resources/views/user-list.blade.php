@@ -20,6 +20,7 @@
                     <th>Địa chỉ</th>
                     <th>SĐT</th>
                     <th>Email</th>
+                    <th>Trạng thái</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,9 +32,14 @@
                         <td>{{$item['address']}}</td>
                         <td>{{$item['phone']}}</td>
                         <td>{{$item['email']}}</td>
+                        @if ($item['status'] === 1)
+                            <td>Kích hoạt</td>
+                        @else
+                            <td>Không kích hoạt</td>
+                        @endif
+                        <td>{{$item['status'] ? 'Kích hoạt' : 'Không kích hoạt'}}</td>
                     </tr>
                 @endforeach
-
             </tbody>
         </table>
     </div>

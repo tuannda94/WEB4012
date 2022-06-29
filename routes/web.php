@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,21 +28,24 @@ Route::get('/users', function () {
             'age' => '28',
             'address' => 'HN',
             'phone' => '0392871868',
-            'email' => 'tuannda3@fe.edu.vn'
+            'email' => 'tuannda3@fe.edu.vn',
+            'status' => 0
         ],
         [
             'name' => 'tuannda4',
             'age' => '29',
             'address' => 'HN',
             'phone' => '0392871869',
-            'email' => 'tuannda4@fe.edu.vn'
+            'email' => 'tuannda4@fe.edu.vn',
+            'status' => 1
         ],
         [
             'name' => 'NGUYEN VAN A',
             'age' => '20',
             'address' => 'HN',
             'phone' => '0123xxxxxxx',
-            'email' => 'nva@fe.edu.vn'
+            'email' => 'nva@fe.edu.vn',
+            'status' => 0
         ],
     ];
     // Truyền giá trị sang view bằng tham số thứ 2
@@ -51,3 +55,32 @@ Route::get('/users', function () {
         'user_list' => $users
     ]);
 });
+
+Route::get('/users/{id}/{name}', function ($id, $name) {
+    dd($id, $name);
+});
+
+// use Illuminate\Http\Request;
+Route::get('/products', function (Request $request) {
+    dd($request->all());
+    // /products?id=1&product-name=iphone
+});
+
+// Chức năng đăng ký và hiển thị kết quả đăng ký
+Route::get('/register', function () {
+    return view('register'); // cần 1 file register.blade.php có chứa form đăng ký
+});
+Route::get('/register-success', function (Request $request) {
+    // dd($request->all());
+    // nhận kết quả từ request GET gửi sang -> trả sang view để hiển thị
+    // có 1 view là register-success.blade.php để hiển thị kq
+    $response = $request->all();
+    return view('register-success', $response
+    // [
+    //     'name' => $response['name'],
+    //     'email' => $response['email'],
+    //     'password' => $response['password'],
+    // ]
+    );
+})->name('register-success');
+
