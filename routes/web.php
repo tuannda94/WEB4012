@@ -58,7 +58,11 @@ Route::get('/register', function () {
 });
 Route::get('/register-success', function (Request $request) {
     // Nhận dữ liệu và truyền sang cho view request-success.blade.php
-    // $requestData = ...;
-    // return view('register-success', ...);
-});
+    $requestData = $request->all(); // ['name' => gtri, 'email' => gtr, 'password' => gtri]
+    return view('register-success', $requestData);
+})->name('regis-success');
 
+Route::post('/register-success', function (Request $request) {
+    $requestData = $request->all();
+    dd($requestData);
+});
