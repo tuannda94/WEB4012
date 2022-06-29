@@ -84,3 +84,11 @@ Route::get('/register-success', function (Request $request) {
     );
 })->name('register-success');
 
+/*
+Lab 1:
+Tạo đường dẫn /user-add được bấm từ nút Add ở danh sách /users
+Hiển thị ra form thêm user mới, method GET, có sử dụng layout master
+Sau khi submit xong sẽ gửi dữ liệu sang /users để thêm mới vào
+*/
+
+
