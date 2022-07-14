@@ -220,6 +220,14 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="{{route('users.list')}}" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                User
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
