@@ -12,6 +12,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
   <!-- Theme style -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
