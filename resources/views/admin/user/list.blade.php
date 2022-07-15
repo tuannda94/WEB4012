@@ -29,7 +29,14 @@
                     <td>{{$user->role ?: 'NA'}}</td>
                     <td>
                         <button class='btn btn-warning'>Sửa</button>
-                        <button class='btn btn-danger'>Xoá</button>
+                        <form
+                            action="{{route('users.delete', $user->id)}}"
+                            method="POST"
+                        >
+                            @csrf
+                            @method('DELETE')
+                            <button class='btn btn-danger'>Xoá</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
