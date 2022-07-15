@@ -75,4 +75,7 @@ Route::get('/', function () {
 // })
 Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('list'); //users.list
+    Route::delete('/delete/{user}', [UserController::class, 'delete'])->name('delete'); //name: users.delete
+    Route::get('/create', [UserController::class, 'create'])->name('create');
+    Route::post('/store', [UserController::class, 'store'])->name('store');
 });
