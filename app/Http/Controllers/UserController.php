@@ -17,7 +17,7 @@ class UserController extends Controller
             ->where('id', '<', 7) // (trường, toán tử so sánh, giá trị)
             ->get();
         // dd($users);
-        $usersPaginate = User::select('id', 'name', 'username', 'email', 'role')
+        $usersPaginate = User::select('id', 'name', 'username', 'email', 'role', 'avatar')
             // ->cursorPaginate(5);
             ->paginate(5);
         // dd($usersPaginate);
@@ -46,7 +46,6 @@ class UserController extends Controller
             $user->delete();
             // return redirect()->route('users.list');
             return redirect()->back();
-            // dd($posts->pluck('id'));
         }
     }
 
@@ -55,8 +54,32 @@ class UserController extends Controller
         return view('admin.user.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
+        $user = new User();
+        // $user->name = $request->name;
+        // 1. Nhập các trường dữ liệu gửi lên vào $user
+        // Chú ý đặt tên cho name === tên thuộc tính
+        $user->fill($request->all());
+        // 2. Kiểm tra file và lưu
+        if ($request->hasFile('avatar')) {
+            // 2.1 Xử lý tên file
+            $avatar = $request->avatar;
+            $avatarName = $avatar->hashName();
+            $avatarName = $request->username . '_' . $avatarName;
+            // 2.2 Lưu file vào trong bộ nhớ
+            // dd($avatar->storeAs('users/avatar', $avatarName));
+            // 2.3 Lấy đường dẫn file vừa lưu gán vào cho $user
+            $user->avatar = $avatar->storeAs('images/users', $avatarName);
+            // Lưu vào thư mục storages/app/images/users
+            // Cần link vào public để đọc ảnh
+            // config/filesystems.php mảng links public images ~ storage images
+            // chạy lệnh php artisan storage:link để link thư mục
+        } else {
+            $user->avatar = '';
+        }
+        // 3. Lưu $user vào CSDL
+        $user->save();
+        return redirect()->route('users.list');
     }
 }

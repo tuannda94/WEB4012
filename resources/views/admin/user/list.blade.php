@@ -6,7 +6,9 @@
 
 @section('content')
     <div>
-        <button class='btn btn-success'>Tạo mới</button>
+        <a href="{{route('users.create')}}">
+            <button class='btn btn-success'>Tạo mới</button>
+        </a>
     </div>
     <table class='table'>
         <thead>
@@ -16,6 +18,7 @@
                 <th>Mã tài khoản</th>
                 <th>Email</th>
                 <th>Quyền</th>
+                <th>Avatar</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -27,6 +30,7 @@
                     <td>{{$user->username}}</td>
                     <td>{{$user->email}}</td>
                     <td>{{$user->role ?: 'NA'}}</td>
+                    <td><img src="{{asset($user->avatar)}}" alt="" width="100"></td>
                     <td>
                         <button class='btn btn-warning'>Sửa</button>
                         <form
