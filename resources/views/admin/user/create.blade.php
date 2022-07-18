@@ -13,7 +13,7 @@
         @csrf
         <div class='form-group'>
             <label for="">Tên</label>
-            <input type="text" name='name' class='form-control'>
+            <input type="text" name='name' class='form-control' value="{{isset($user) ? $user->name : ''}}">
         </div>
         <div class='form-group'>
             <label for="">Email</label>
@@ -51,3 +51,6 @@
         </div>
     </form>
 @endsection
+
+<!-- Lab 3: Hoàn thiện form chỉnh sửa, có hiển thị ảnh cũ và lưu dữ liệu chỉnh sửa -->
+<!-- method PUT, sử dụng ->update() -->

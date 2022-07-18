@@ -32,7 +32,9 @@
                     <td>{{$user->role ?: 'NA'}}</td>
                     <td><img src="{{asset($user->avatar)}}" alt="" width="100"></td>
                     <td>
-                        <button class='btn btn-warning'>Sửa</button>
+                        <a href="{{route('users.edit', $user->id)}}">
+                            <button class='btn btn-warning'>Sửa</button>
+                        </a>
                         <form
                             action="{{route('users.delete', $user->id)}}"
                             method="POST"

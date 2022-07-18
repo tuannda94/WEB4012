@@ -68,7 +68,6 @@ class UserController extends Controller
             $avatarName = $avatar->hashName();
             $avatarName = $request->username . '_' . $avatarName;
             // 2.2 Lưu file vào trong bộ nhớ
-            // dd($avatar->storeAs('users/avatar', $avatarName));
             // 2.3 Lấy đường dẫn file vừa lưu gán vào cho $user
             $user->avatar = $avatar->storeAs('images/users', $avatarName);
             // Lưu vào thư mục storages/app/images/users
@@ -81,5 +80,12 @@ class UserController extends Controller
         // 3. Lưu $user vào CSDL
         $user->save();
         return redirect()->route('users.list');
+    }
+
+    public function edit(User $user)
+    {
+        return view('admin.user.create', [
+            'user' => $user
+        ]);
     }
 }
