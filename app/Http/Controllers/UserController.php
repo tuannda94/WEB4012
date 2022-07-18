@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Room;
 
 class UserController extends Controller
 {
@@ -12,7 +13,7 @@ class UserController extends Controller
         // Lấy ra toàn bộ bản ghi trong DB bảng users
         // $users = User::all();
 
-        $users = User::select('id', 'name', 'birthday', 'username', 'email')
+        $users = User::select('id', 'name', 'birthday', 'username', 'email', 'avatar')
         // ->get();
         ->where('id', '>', 3) // (tên trường, toán tử điều kiện, giá trị)
         // ->where('id', '<=', 7)
@@ -44,5 +45,47 @@ class UserController extends Controller
         if($user->delete()) {
             return redirect()->back();
         }
+    }
+
+    public function create()
+    {
+        // 1. Lấy ra danh sách room để bên view select
+        $rooms = Room::select('id', 'name')->get();
+        // 2. Trả về view kèm dữ liệu room
+        return view('admin.user.create', [
+            'rooms' => $rooms
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        // 1. Khởi tạo đối tượng user mới
+        $user = new User();
+        // 2. Cập nhật giá trị cho các thuộc tính của $user
+        // $user->name = $request->name;
+        // $user->phone = $request->phone;
+        $user->fill($request->all()); // đặt name ở form cùng giá trị với thuộc tính
+        // 3. Xử lý file avatar gửi lên
+        if($request->hasFile('avatar')) {
+            // Nếu trường avatar có file thì sẽ trả về true
+            // 3.1 Xử lý tên file
+            $avatar = $request->avatar;
+            $avatarName = $avatar->hashName();
+            $avatarName = $request->username . '_' . $avatarName;
+            // dd($avatar->storeAs('images/users', $avatarName));
+            // 3.2 Lưu file và gán đường dẫn cho $user->avatar
+            $user->avatar = $avatar->storeAs('images/users', $avatarName);
+            // storage/app/images/users
+            // Cấu hình config/filesystems.php để public/images ~ storage/app/images
+            // Chạy câu lệnh: php artisan storage:link
+        } else {
+            $user->avatar = '';
+        }
+        // 4. Lưu
+        $user->save();
+
+        return redirect()->route('users.list');
+        // Lab: Thực hiện chức năng chỉnh sửa, method PUT, có dữ liệu của user hiện tại và lưu
+
     }
 }
