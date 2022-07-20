@@ -54,8 +54,28 @@ class UserController extends Controller
         return view('admin.user.create');
     }
 
+    private function saveFile($file, $prefixName = '', $folder = 'public')
+    {
+        if ($file) {
+            $fileName = $file->hashName();
+            $fileName = isset($prefixName)
+                ? $prefixName . '_' . $fileName
+                : $fileName;
+
+            return $file->storeAs($folder, $fileName);
+        }
+    }
+
     public function store(Request $request)
     {
+        // Định nghĩa các điều kiện validate
+        $request->validate([
+            'name' => 'required|min:6|max:50',
+            'email' => 'required|min:6|email'
+        ]);
+        // Nếu không thoả mãn sẽ redirect về form và kèm theo errors
+        // Nếu tất cả các điều kiện ở trên đều thoả mãn thì sẽ chạy xuống dưới
+
         $user = new User();
         // $user->name = $request->name;
         // 1. Nhập các trường dữ liệu gửi lên vào $user
@@ -77,6 +97,7 @@ class UserController extends Controller
         } else {
             $user->avatar = '';
         }
+        $user->password = hash($request->password);
         // 3. Lưu $user vào CSDL
         $user->save();
         return redirect()->route('users.list');
@@ -87,5 +108,22 @@ class UserController extends Controller
         return view('admin.user.create', [
             'user' => $user
         ]);
+    }
+
+    public function update(Request $request, User $user) {
+        $user->fill($request->all());
+        if ($request->hasFile('avatar')) {
+            $user->avatar = $this->saveFile(
+                $request->avatar,
+                $user->username,
+                'images/users'
+            );
+        }
+        if ($request->password) {
+            $user->password = hash($request->password);
+        }
+        $user->save();
+
+        return redirect()->route('users.list');
     }
 }
