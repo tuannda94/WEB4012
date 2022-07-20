@@ -5,6 +5,14 @@
 @section('content-title', 'Tạo mới người dùng')
 
 @section('content')
+    @if($errors->any())
+        <ul class='danger'>
+            @foreach($errors->all() as $error)
+                <li>{{$error}}</li>
+            @endforeach
+        </ul>
+    @endif
+
     <form
         action="{{isset($user)
             ? route('users.update', $user->id)
@@ -19,11 +27,11 @@
         @endif
         <div class='form-group'>
             <label for="">Tên</label>
-            <input type="text" name='name' class='form-control' value="{{isset($user) ? $user->name : ''}}">
+            <input type="text" name='name' class='form-control' value="{{isset($user) ? $user->name : old('name')}}">
         </div>
         <div class='form-group'>
             <label for="">Email</label>
-            <input type="email" name='email' class='form-control' value="{{isset($user) ? $user->email : ''}}">
+            <input type="text" name='email' class='form-control' value="{{isset($user) ? $user->email : ''}}">
         </div>
         <div class='form-group'>
             <label for="">Mật khẩu</label>
