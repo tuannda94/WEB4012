@@ -32,7 +32,9 @@
                     <td>{{$user->email}}</td>
                     <td><img src="{{asset($user->avatar)}}" alt="" width="100"></td>
                     <td>
-                        <button class='btn btn-warning'>Chỉnh sửa</button>
+                        <a href="{{route('users.edit', $user->id)}}">
+                            <button class='btn btn-warning'>Chỉnh sửa</button>
+                        </a>
                         <form
                             action="{{route('users.delete', $user->id)}}"
                             method="post"

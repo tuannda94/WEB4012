@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Room;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -57,6 +58,16 @@ class UserController extends Controller
         ]);
     }
 
+    private function saveFile($file, $prefixName = '', $folder = 'public')
+    {
+        $fileName = $file->hashName();
+        $fileName = $prefixName
+            ? $prefixName . '_' . $fileName
+            : $fileName;
+
+        return $file->storeAs($folder, $fileName);
+    }
+
     public function store(Request $request)
     {
         // 1. Khởi tạo đối tượng user mới
@@ -87,5 +98,33 @@ class UserController extends Controller
         return redirect()->route('users.list');
         // Lab: Thực hiện chức năng chỉnh sửa, method PUT, có dữ liệu của user hiện tại và lưu
 
+    }
+
+    public function edit(User $user)
+    {
+        $user->birthday = date('Y-m-d', strtotime($user->birthday));
+        $rooms = Room::select('id', 'name')->get();
+        return view('admin.user.create', [
+            'user' => $user,
+            'rooms' => $rooms,
+        ]);
+    }
+
+    public function update(Request $request, User $user) {
+        $user->fill($request->except('password'));
+
+        if($request->hasFile('avatar')) {
+            $user->avatar = $this->saveFile(
+                $request->avatar,
+                $request->name,
+                'images/users/'
+            );
+        }
+        if($request->password) {
+            $user->password = $request->password;
+        }
+
+        $user->save();
+        return redirect()->route('users.list');
     }
 }
