@@ -46,4 +46,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Quan hệ 1 user có nhiều posts
+    public function posts()
+    {
+        // Nếu đã tạo đúng định dạng khoá ngoại và khoá chính thì có thể bỏ qua 2 tham số đăng sau
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
+
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class, 'user_id', 'id');
+    }
 }

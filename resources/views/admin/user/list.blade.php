@@ -17,6 +17,8 @@
                 <th>Tên</th>
                 <th>Mã tài khoản</th>
                 <th>Email</th>
+                <th>bài viết</th>
+                <th>Lop</th>
                 <th>Quyền</th>
                 <th>Avatar</th>
                 <th>Hành động</th>
@@ -29,6 +31,21 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->username}}</td>
                     <td>{{$user->email}}</td>
+                    <td>
+                        <ul>
+                            @foreach ($user->posts as $post)
+                                <li>{{$post->classroom->name}}</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach ($user->classrooms as $classroom)
+                                <li>{{$classroom->name}}</li>
+                            @endforeach
+                        </ul>
+                    </td>
+                    <!-- <td>{{count($user->posts)}}</td> -->
                     <td>{{$user->role ?: 'NA'}}</td>
                     <td><img src="{{asset($user->avatar)}}" alt="" width="100"></td>
                     <td>

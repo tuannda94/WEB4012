@@ -11,14 +11,26 @@ class UserController extends Controller
 {
     public function index()
     {
+        // Test relation
+        // $user = User::find(8);
+        // $posts = $user->posts;
+            $post = Post::find(2);
+            $classroom = $post->classroom;
+            // dd($classroom);
+
         // Lấy ra toàn bộ bản ghi trong DB bảng users
         // $users = User::all();
-        $users = User::select('id', 'name', 'username', 'email')
-            ->where('id', '>', 5) // (trường, toán tử so sánh, giá trị)
-            ->where('id', '<', 7) // (trường, toán tử so sánh, giá trị)
-            ->get();
+        // $users = User::select('id', 'name', 'username', 'email')
+        //     ->where('id', '>', 5) // (trường, toán tử so sánh, giá trị)
+        //     ->where('id', '<', 7) // (trường, toán tử so sánh, giá trị)
+        //     ->get();
         // dd($users);
         $usersPaginate = User::select('id', 'name', 'username', 'email', 'role', 'avatar')
+            ->with([
+                'posts', // lấy thêm các bản ghi post theo id của từng user
+                'posts.classroom', // lấy thêm classroom theo từng post đó
+                'classrooms'
+            ])
             // ->cursorPaginate(5);
             ->paginate(5);
         // dd($usersPaginate);
