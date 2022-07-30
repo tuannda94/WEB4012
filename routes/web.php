@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,12 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::post('/store', [UserController::class, 'store'])->name('store');
     Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
     Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
+});
 
+Route::prefix('/auth')->name('auth.')->group(function () {
+    Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 

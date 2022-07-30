@@ -172,7 +172,11 @@
           <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">
+            <!-- Auth::check() trả về true/false đã đăng nhập chưa -->
+            <!-- Auth::user() trả về bản ghi user đã đăng nhập -->
+            {{Auth::check() ? Auth::user()->email : ''}}
+          </a>
         </div>
       </div>
 
