@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 // Nếu báo UserController không tồn tại
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,3 +82,5 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
     Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
 });
+
+Route::get('/rooms', [RoomController::class, 'index']);

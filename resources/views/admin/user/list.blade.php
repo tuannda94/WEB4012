@@ -19,6 +19,7 @@
                 <th>Mã nhân viên</th>
                 <th>Email</th>
                 <th>Avatar</th>
+                <th>Phòng ban</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -31,6 +32,9 @@
                     <td>{{$user->username}}</td>
                     <td>{{$user->email}}</td>
                     <td><img src="{{asset($user->avatar)}}" alt="" width="100"></td>
+                    <!-- Nếu chỉ select và paginate thì ở đây mới thực hiện truy vấn -->
+                    <!-- N+1 Query để lấy ra danh sách kèm thông tin của quan hệ -->
+                    <td>{{isset($user->room) ? $user->room->name : ''}}</td>
                     <td>
                         <a href="{{route('users.edit', $user->id)}}">
                             <button class='btn btn-warning'>Chỉnh sửa</button>

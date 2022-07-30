@@ -12,12 +12,22 @@ class UserController extends Controller
 {
     public function index()
     {
+        // $user = User::find(9);
+        // $room = $user->room; // gọi phương thức quan hệ tới model Room
+        // dd($user, $room);
         // Lấy ra toàn bộ bản ghi trong DB bảng users
         // $users = User::all();
 
-        $users = User::select('id', 'name', 'birthday', 'username', 'email', 'avatar')
+        // Cha con cùng bảng
+        // $room = Room::find(5);
+        // $roomChildren = $room->children;
+        // $roomParent = $room->oneParent->oneParent;
+        // dd($room, $roomParent);
+
+        $users = User::select('*')
         // ->get();
         ->where('id', '>', 3) // (tên trường, toán tử điều kiện, giá trị)
+        ->with('room') // truy vấn thêm quan hệ trước khi trả kq ra view
         // ->where('id', '<=', 7)
         ->paginate(5);
         // ->cursorPaginate(5); truy vấn where id > 5 limit 5

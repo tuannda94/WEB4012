@@ -51,4 +51,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         // 'birthday' => 'date:d/m/Y'
     ];
+
+    // Định nghĩa quan hệ 1 user thuộc 1 room
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'id');
+    }
 }
