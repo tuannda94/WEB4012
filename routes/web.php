@@ -20,7 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('/users')->name('users.')->group(function () {
+// Quản trị user sẽ cần đăng nhập mới được vào -> middleware('auth')
+Route::middleware('auth')->prefix('/users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('list'); //name: users.list
     Route::delete('/delete/{user}', [UserController::class, 'delete'])->name('delete');
     Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -28,11 +29,12 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::get('/edit/{user}', [UserController::class, 'edit'])->name('edit');
     Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
 });
-
-Route::prefix('/auth')->name('auth.')->group(function () {
+// Login chỉ được vào khi người dùng chưa đăng nhập -> middleware('guest')
+Route::middleware('guest')->prefix('/auth')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
     Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+Route::middleware('auth')->get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 
 

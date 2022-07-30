@@ -23,7 +23,9 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // return redirect(RouteServiceProvider::HOME);
+                // Nếu đã đăng nhập rồi mà vào route middleware guest thì sẽ quay lại quản trị
+                return redirect()->route('users.list');
             }
         }
 
