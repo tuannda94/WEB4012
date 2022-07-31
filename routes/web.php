@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 // Nếu báo UserController không tồn tại
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,3 +85,8 @@ Route::prefix('/users')->name('users.')->group(function () {
 });
 
 Route::get('/rooms', [RoomController::class, 'index']);
+
+Route::prefix('/auth')->name('auth.')->group(function () {
+    Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+});

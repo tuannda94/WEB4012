@@ -170,7 +170,13 @@
           <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">
+            <!-- Auth::check() trả về true/false đã đăng nhập hay chưa -->
+            @if (Auth::check())
+              <!-- Auth::user() trả về thể hiện của model User chứa thông tin đã đăng nhập -->
+              {{Auth::user()->email}}
+            @endif
+          </a>
         </div>
       </div>
 
