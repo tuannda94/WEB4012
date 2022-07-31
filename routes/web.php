@@ -75,7 +75,8 @@ Route::get('/', function () {
 // Route::prefix(tiền tố đường dẫn)->name(tên)->group(function() {
     // Route::phuong_thuc(đường dẫn, [Controller::class, hàm])->name(tên);
 // })
-Route::prefix('/users')->name('users.')->group(function () {
+// middleware auth sẽ chỉ cho request khi đã đăng nhập
+Route::middleware('auth')->prefix('/users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('list'); //users.list
     Route::delete('/delete/{user}', [UserController::class, 'delete'])->name('delete'); //name: users.delete
     Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -84,9 +85,12 @@ Route::prefix('/users')->name('users.')->group(function () {
     Route::put('/update/{user}', [UserController::class, 'update'])->name('update');
 });
 
-Route::get('/rooms', [RoomController::class, 'index']);
+Route::get('/rooms', [RoomController::class, 'index'])->middleware('auth');
 
-Route::prefix('/auth')->name('auth.')->group(function () {
+// middleware guest chỉ cho request khi chưa đăng nhập
+Route::middleware('guest')->prefix('/auth')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
     Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
 });
+
+Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth');
