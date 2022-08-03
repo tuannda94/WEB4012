@@ -139,4 +139,18 @@ class UserController extends Controller
 
         return redirect()->route('users.list');
     }
+
+    public function apiGetListUser() {
+        $users = User::select('id', 'name', 'username')
+            ->with('posts')
+            ->paginate(2);
+        // return [
+        //     'status' => 200,
+        //     'data' => $users
+        // ];
+        return response()->json([
+            'status' => 200,
+            'data' => $users
+        ], 200); // json có thể truyền thêm http status code
+    }
 }

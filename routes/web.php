@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 // Quản trị user sẽ cần đăng nhập mới được vào -> middleware('auth')
-Route::middleware('auth')->prefix('/users')->name('users.')->group(function () {
+Route::middleware(['auth', 'checkRoleUser'])->prefix('/users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('list'); //name: users.list
     Route::delete('/delete/{user}', [UserController::class, 'delete'])->name('delete');
     Route::get('/create', [UserController::class, 'create'])->name('create');
