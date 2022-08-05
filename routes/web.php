@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 // Nếu báo UserController không tồn tại
 use App\Http\Controllers\UserController;
@@ -76,7 +77,7 @@ Route::get('/', function () {
     // Route::phuong_thuc(đường dẫn, [Controller::class, hàm])->name(tên);
 // })
 // middleware auth sẽ chỉ cho request khi đã đăng nhập
-Route::middleware('auth')->prefix('/users')->name('users.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('/users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('list'); //users.list
     Route::delete('/delete/{user}', [UserController::class, 'delete'])->name('delete'); //name: users.delete
     Route::get('/create', [UserController::class, 'create'])->name('create');
@@ -91,6 +92,10 @@ Route::get('/rooms', [RoomController::class, 'index'])->middleware('auth');
 Route::middleware('guest')->prefix('/auth')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
     Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+
+    // use Laravel\Socialite\Facades\Socialite;
+    Route::get('/login-google', [AuthController::class, 'getLoginGoogle'])->name('getLoginGoogle');
+    Route::get('/google/callback', [AuthController::class, 'loginGoogleCallback'])->name('loginGoogleCallback');
 });
 
 Route::get('/auth/logout', [AuthController::class, 'logout'])->middleware('auth');
