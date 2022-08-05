@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-
+use Laravel\Socialite\Facades\Socialite;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,8 +33,26 @@ Route::middleware(['auth', 'checkRoleUser'])->prefix('/users')->name('users.')->
 Route::middleware('guest')->prefix('/auth')->name('auth.')->group(function () {
     Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
     Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+    Route::get('/login-google', [AuthController::class, 'getGoogleLogin'])->name('getGoogleLogin');
+    Route::get('/google/callback', [AuthController::class, 'googleLoginCallback'])->name('googleLoginCallback');
+});
+Route::middleware('auth')->prefix('/auth')->name('auth.')->group(function () {
+    Route::get('/create-password', [AuthController::class, 'createPasswordForm'])->name('createPasswordForm');
+    Route::post('/save-password', [AuthController::class, 'savePassword'])->name('savePassword');
+    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware('auth')->get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 
 
+// use Laravel\Socialite\Facades\Socialite;
+// Đường dẫn để mở ra màn hình chọn tài khoản google login
+// Route::get('login-google', function () {
+//     return Socialite::driver('google')->redirect();
+// });
+
+// Đường dẫn cấu hình trong phần Authorized redirect URIs của console
+// Route::get('/google/callback', function () {
+    // Khi chọn tài khoản login google xong sẽ redirect về route này
+    // và trả thông tin user lại
+    // dd(Socialite::driver('google')->user());
+// });

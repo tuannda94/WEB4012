@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,8 @@ Route::get('users', [UserController::class, 'apiGetListUser']);
 
 // Route tự định nghĩa phương thức và hàm xử lý theo rule của laravel
 Route::resource('classrooms', UserController::class);
+
+// use Laravel\Socialite\Facades\Socialite;
+Route::get('login-google', function () {
+    return Socialite::driver('google')->redirect();
+});

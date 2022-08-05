@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 // php artisan make:controller AuthController
 class AuthController extends Controller
@@ -35,6 +38,60 @@ class AuthController extends Controller
             return redirect()->route('auth.getLogin');
         }
     }
+
+    public function getGoogleLogin()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleLoginCallback()
+    {
+        // dd(config('roles.ROLES'));
+
+        $googleUser = Socialite::driver('google')->user();
+        $user = User::where('email', $googleUser->email)->first();
+
+        if ($user) {
+            Auth::login($user);
+
+            return redirect()->route('users.list');
+        } else {
+            $newUser = new User();
+            // Lưu nốt thông tin
+            $newUser->role = config('roles.ADMIN');
+            $newUser->status = config('statuses.ACTIVE');
+            $newUser->code = '';
+            $newUser->username = '';
+            $newUser->password = '';
+
+            $newUser->save();
+            Auth::login($newUser); // đăng nhập trước rồi đổi password để update password mới cho user đó luôn
+
+            return redirect()->route('auth.create-password');
+        }
+    }
+
+    public function createPasswordForm()
+    {
+        return view('auth.create-password');
+    }
+
+    public function savePassword(Request $request)
+    {
+        $password = $request->password;
+        $loginUserId = Auth::id();
+
+        if ($loginUserId) {
+            $user = User::find($loginUserId);
+            $user->password = Hash::make($password);
+            $user->save();
+
+            return redirect()->route('users.list');
+        } else {
+            $this->logout($request);
+        }
+    }
+
 
     public function logout(Request $request)
     {

@@ -30,4 +30,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Cấu hình các mã để định danh xem thông tin đăng nhập google lấy từ đâu
+    // và phản hồi như thế nào
+    // Key được lấy từ console.cloud.google.com
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+    ]
+
 ];

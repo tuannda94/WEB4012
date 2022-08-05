@@ -18,6 +18,11 @@ return [
         'passwords' => 'users',
     ],
 
+    // Cấu hình để khi gọi thư viện Socialite không cần gọi driver('google')
+    // 'socialite' => [
+    //     'drivers' => ['google']
+    // ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
